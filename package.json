@@ -9,6 +9,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.13.3"
+    "body-parser": "^1.14.2",
+    "chai": "^3.4.1",
+    "express": "^4.13.3",
+    "mocha": "^2.3.4",
+    "superagent": "^1.6.1",
+    "supertest": "^1.1.0"
+  },
+  "devDependencies": {
+    "supertest": "^1.1.0"
   }
 }

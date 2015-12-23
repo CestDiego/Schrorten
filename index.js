@@ -1,13 +1,21 @@
-var express = require('express');
-var app = express();
+function hash (string) {
+  var hash = 0,
+      char;
+  if (string.length == 0) return hash;
+  for (i = 0; i < string.length; i++) {
+    char = string.charCodeAt(i);
+    hash = ((hash<<5)-hash)+char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return hash;
+}
 
-app.get('/', function (req, res) {
-  res.send('Hello World!');
-});
+function getURI(str){
+  var result = hash(str);
+  return result.toString(27)
+}
 
-var server = app.listen(3000, function () {
-  var host = server.address().address;
-  var port = server.address().port;
-
-  console.log('Example app listening at http://%s:%s', host, port);
-});
+module.exports = {
+  getURI: getURI,
+  hash: hash
+};
