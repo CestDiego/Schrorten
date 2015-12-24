@@ -4,11 +4,11 @@ var assert = require('chai').assert,
 
 describe('Hashing function', function(){
 
-  it('returns 0 for empty string',function(){
+  it('returns 0 for empty string', function(){
     assert.equal(hash(""), 0);
   });
 
-  it('returns the same value for same input',function (){
+  it('returns the same value for same input', function (){
     var input = "https://github.com/CestDiego/shortenuh",
         hash1 = hash(input),
         hash2 = hash(input);
