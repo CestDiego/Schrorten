@@ -31,30 +31,47 @@ describe("Server", function() {
           .set('Accept', 'application/json')
           .send(requestData)
           .end(function (err, res2) {
+
             expect(res.body).to.deep.equal(res2.body)
             done()
           })
       });
   })
 
-
-
   describe('When using API', function () {
-    var requestData = {url: "http://google.com", customKey: false},
+    var requestData = {url: "http://facebook.com", customKey: false},
         response;
 
     before(function (){
       request(app)
         .post('/api/v1/url')
         .send(requestData)
+        .expect(200)
         .end(function (err, res) {
-          expect(res.status).to.equal(200);
           response = res
         })
     })
 
     it('should have a valid URL', function () {
-      expect(response.body.uri).to.exist;
+      return expect(response.body.uri).to.exist;
     })
+
+    it('should redirect', function (done) {
+      request(app)
+        .get(response.body.uri)
+        .expect(301, done)
+    })
+
+    it('should send me to the initial url', function (done) {
+      request(app)
+        .get(response.body.uri)
+        .end(function (err, res) {
+          var location = res.header.location
+          expect(location).to.equal(requestData.url)
+          done()
+        })
+
+    })
+
   })
 });
