@@ -3,13 +3,21 @@ var bodyParser = require('body-parser');
 
 var hash = require('./index.js').hash;
 
+var db   = require('./db.js');
+
 var app = express();
+
+app.use(express.static('public'));
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 app.get('/', function (req, res) {
-  res.send('Hello World!');
+  res.sendFile(__dirname + '/index.html');
+});
+
+app.get(/u\/.*/, function(req, res) {
+  res.redirect(301, db.get(req.url));
 });
 
 app.post('/api/v1/url', function (req, res) {
@@ -23,6 +31,9 @@ app.post('/api/v1/url', function (req, res) {
   else
     uri = hash(urlData.url).toString(27)
 
+  uri = '/u/' + uri
+
+  db.save(uri, urlData.url)
   res.json({uri: uri});
 });
 
